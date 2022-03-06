@@ -2,7 +2,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from posts.models import Post, Comment
 from posts.api.serializers import PostSerializer, CommentSerializer
-from posts.api.permissions import IsPostAuthorOrReadOnly
+from posts.api.permissions import IsPostAuthorOrAdminOrReadOnly, IsCommentAuthorOrAdminOrReadOnly
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 
@@ -20,7 +20,7 @@ class UpdateRetrieveDestroyPostView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsPostAuthorOrReadOnly]
+    permission_classes = [IsPostAuthorOrAdminOrReadOnly]
 
 class CreateCommentView(generics.CreateAPIView):
     queryset = Comment.objects.all()
@@ -44,7 +44,7 @@ class PostCommentsView(generics.ListAPIView):
         return Response(serializer.data)
 
 class UpdateRetrieveDestroyCommentView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsPostAuthorOrReadOnly]
+    permission_classes = [IsCommentAuthorOrAdminOrReadOnly]
