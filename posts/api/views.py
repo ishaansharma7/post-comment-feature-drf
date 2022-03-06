@@ -6,6 +6,8 @@ from posts.api.permissions import IsPostAuthorOrAdminOrReadOnly, IsCommentAuthor
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 
+
+# create post if user is authenticated
 class ListCreatePostView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -16,12 +18,14 @@ class ListCreatePostView(generics.ListCreateAPIView):
         post_author = self.request.user
         serializer.save(post_author=post_author)
 
+# only update if user is the author of post or admin user or else read only
 class UpdateRetrieveDestroyPostView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsPostAuthorOrAdminOrReadOnly]
 
+# create comment if user is authenticated
 class CreateCommentView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -34,6 +38,7 @@ class CreateCommentView(generics.CreateAPIView):
         original_post = Post.objects.get(pk=original_post_pk)
         serializer.save(original_post=original_post, comment_author=comment_author)
 
+# list of comments asssociated with a post
 class PostCommentsView(generics.ListAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -43,6 +48,7 @@ class PostCommentsView(generics.ListAPIView):
         serializer = self.serializer_class(post_comments, many=True)
         return Response(serializer.data)
 
+# only update if user is the author of comment or admin user or else read only
 class UpdateRetrieveDestroyCommentView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
