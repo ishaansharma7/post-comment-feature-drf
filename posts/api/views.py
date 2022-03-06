@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics
 from rest_framework.response import Response
 from posts.models import Post, Comment
 from posts.api.serializers import PostSerializer, CommentSerializer
