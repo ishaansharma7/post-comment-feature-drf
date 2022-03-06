@@ -28,10 +28,11 @@ class AllUsers(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, unique=True)
     user_name = models.CharField(max_length=50, unique=True)
     first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50, blank=True)
     start_date = models.DateField(default=timezone.now)
     about = models.TextField(max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     GENDER_CHOICES = (
         ('Not Selected', 'Not Selected'),
         ('Male', 'Male'),
