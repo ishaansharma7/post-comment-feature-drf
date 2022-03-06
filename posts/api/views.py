@@ -4,7 +4,7 @@ from posts.models import Post, Comment
 from posts.api.serializers import PostSerializer, CommentSerializer
 from posts.api.permissions import IsPostAuthorOrAdminOrReadOnly, IsCommentAuthorOrAdminOrReadOnly
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 
 # create post if user is authenticated
