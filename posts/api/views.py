@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.response import Response
 from posts.models import Post, Comment
 from posts.api.serializers import PostSerializer, CommentSerializer
@@ -7,12 +7,14 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 
-# create post if user is authenticated
+# create post if user is authenticated and list post in read only
 class ListCreatePostView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['post_title', 'post_author__user_name']
 
     def perform_create(self, serializer):
         post_author = self.request.user

@@ -1,10 +1,7 @@
-from django.urls import include, path
+from django.urls import path
 from rest_framework.routers import DefaultRouter
-from accounts.api.views import CRUDAllUsersViewset
-
-router = DefaultRouter()
-router.register('all-users', CRUDAllUsersViewset, basename='all-users')
+from accounts.api.views import ListCreateAllUsersView
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('all-users/', ListCreateAllUsersView.as_view(), name='list-create-users'),
 ]
